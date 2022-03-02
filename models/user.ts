@@ -1,20 +1,16 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes, ENUM } from 'sequelize'
 import db from '../db/connection'
 
-const Usuario = db.define('Usuario', {
-  nombre: {
-    type: DataTypes.STRING
-  },
-  email: {
-    type: DataTypes.STRING
-  },
-  estado: {
-    type: DataTypes.BOOLEAN
+const User = db.define('user', {
+  name: {
+    type: DataTypes.STRING,
   },
   password: {
     type: DataTypes.STRING
+  },
+  level: {
+    type: DataTypes.ENUM('user', 'admin', 'student')
   }
 });
 
-export default Usuario;
-
+export default User;

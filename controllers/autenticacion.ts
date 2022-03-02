@@ -1,8 +1,8 @@
-import { Response, Request } from 'express';
-import { deCrypt } from '../helpers/encript';
-import Usuario from '../models/user';
+//import { Response, Request } from 'express';
+//import { deCrypt } from '../helpers/encript';
+//import Usuario from '../models/user';
 
-export const autenticacion = async(req:Request, resp:Response) => {
+/* export const autenticacion = async(req:Request, resp:Response) => {
   const {email, password} = req.body
   try {
     const existeEmail = await Usuario.findOne({
@@ -35,3 +35,4 @@ export const autenticacion = async(req:Request, resp:Response) => {
     email
   })
 }
+ */

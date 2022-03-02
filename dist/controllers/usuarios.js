@@ -12,48 +12,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAllUsers = exports.deleteUsuario = exports.updatedUsuario = exports.postUsuario = exports.getUsuario = exports.getUsuarios = void 0;
-const express_validator_1 = require("express-validator");
+exports.postUsuario = exports.getUsers = void 0;
+//import { validationResult } from "express-validator";
 const encript_1 = require("../helpers/encript");
 const user_1 = __importDefault(require("../models/user"));
-const getUsuarios = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const usuarios = yield user_1.default.findAll({
-        where: {
-            estado: true
-        }
-    });
+const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield user_1.default.findAll();
     res.json({
-        usuarios
+        users
     });
 });
-exports.getUsuarios = getUsuarios;
-const getUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    const usuario = yield user_1.default.findByPk(id);
-    if (usuario) {
-        return res.json(usuario);
-    }
-    else {
-        return res.status(404).json({
-            msg: `No existe un usuario con el ${id}`
-        });
-    }
-});
-exports.getUsuario = getUsuario;
+exports.getUsers = getUsers;
+/* export const getUsuario = async (req:Request, res:Response) => {
+  
+  const { id } = req.params;
+  const usuario = await Usuario.findByPk(id);
+  if (usuario) {
+    return res.json(usuario)
+  } else {
+    return res.status(404).json({
+      msg: `No existe un usuario con el ${id}`
+    })
+  }
+} */
 const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
-    const { nombre, email } = req.body;
+    const { name } = body;
     body.password = (0, encript_1.encript)(body.password);
-    const passwordDecrypt = (0, encript_1.deCrypt)(body.password);
     try {
-        const usuario = new user_1.default(body);
-        yield usuario.save();
+        const user = new user_1.default(body);
+        yield user.save();
         return res.json({
             state: 'ok',
             msg: 'usuario grabado exitosamente',
-            nombre,
-            email,
-            passwordDecrypt
+            name
         });
     }
     catch (error) {
@@ -64,61 +56,64 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.postUsuario = postUsuario;
-const updatedUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    const { body } = req;
-    try {
-        const idUserExist = yield user_1.default.findByPk(id);
-        if (!idUserExist) {
-            return res.status(404).json({
-                msg: 'No existe un usuario con el ID' + id
-            });
-        }
-        body.password = (0, encript_1.encript)(body.password);
-        yield idUserExist.update(body);
-        return res.json(idUserExist);
+/* export const updatedUsuario = async (req:Request, res:Response) => {
+  const { id } = req.params;
+  const { body } = req;
+
+  try {
+    const idUserExist = await Usuario.findByPk(id);
+    if(!idUserExist){
+      return res.status(404).json({
+        msg:'No existe un usuario con el ID' + id
+      })
     }
-    catch (error) {
-        return res.status(500).json({
-            msg: 'Hable con el administrador'
-        });
+
+    body.password = encript(body.password);
+
+    await idUserExist.update(body)
+    return res.json(idUserExist)
+
+  } catch (error) {
+    return res.status(500).json({
+      msg: 'Hable con el administrador'
+    })
+  }
+} */
+/* export const deleteUsuario = async (req:Request, res:Response) => {
+  const { id } = req.params;
+  try {
+    const idUserExist = await Usuario.findByPk(id);
+    if(!idUserExist){
+      return res.status(404).json({
+        msg:'No existe un usuario con el ID' + id
+      })
     }
-});
-exports.updatedUsuario = updatedUsuario;
-const deleteUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    try {
-        const idUserExist = yield user_1.default.findByPk(id);
-        if (!idUserExist) {
-            return res.status(404).json({
-                msg: 'No existe un usuario con el ID' + id
-            });
-        }
-        yield idUserExist.update({ estado: false });
-        return res.json(idUserExist);
+    await idUserExist.update({estado: false})
+    return res.json(idUserExist)
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: 'Hable con el administrador'
+    })
+  }
+}
+
+export const deleteAllUsers = async (req:Request, res:Response) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(404).json(errors)
+  }
+  
+  const deleteAll = await Usuario.findAll({
+    where: {
+      estado: true
     }
-    catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            msg: 'Hable con el administrador'
-        });
-    }
-});
-exports.deleteUsuario = deleteUsuario;
-const deleteAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const errors = (0, express_validator_1.validationResult)(req);
-    if (!errors.isEmpty()) {
-        return res.status(404).json(errors);
-    }
-    const deleteAll = yield user_1.default.findAll({
-        where: {
-            estado: true
-        }
-    });
-    deleteAll.forEach((user) => __awaiter(void 0, void 0, void 0, function* () {
-        yield user.update({ estado: false });
-    }));
-    return res.json(deleteAll);
-});
-exports.deleteAllUsers = deleteAllUsers;
+  })
+  deleteAll.forEach(async (user)=>{
+    await user.update({estado: false})
+  })
+  
+  return res.json(deleteAll)
+} */
 //# sourceMappingURL=usuarios.js.map

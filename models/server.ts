@@ -1,6 +1,6 @@
 import express, {Application} from 'express';
 import * as userRoute from '../routes/user';
-import * as authRouter from '../routes/autenticacion';
+//import * as authRouter from '../routes/autenticacion';
 import cors from 'cors';
 
 import db from '../db/connection';
@@ -10,7 +10,7 @@ class Server {
   private port:string;
   private apiPaths = {
     usuarios: '/api/usuarios',
-    auth: '/api/auth'
+    //auth: '/api/auth'
   }
 
   constructor ( ) {
@@ -33,17 +33,14 @@ class Server {
   }
 
   middlewares(){
-    //cors
     this.app.use( cors() );
-    //Parseo del body
     this.app.use(express.json());
-    //habilitacion de Carpetas publicas para servir contenido
     this.app.use(express.static('public'))
   }
 
   routes(){
     this.app.use(this.apiPaths.usuarios, userRoute.default);
-    this.app.use(this.apiPaths.auth, authRouter.default);
+    //this.app.use(this.apiPaths.auth, authRouter.default);
   }
 
   listen(){

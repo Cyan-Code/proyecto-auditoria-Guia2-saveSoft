@@ -33,14 +33,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const userRoute = __importStar(require("../routes/user"));
-const authRouter = __importStar(require("../routes/autenticacion"));
+//import * as authRouter from '../routes/autenticacion';
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
 class Server {
     constructor() {
         this.apiPaths = {
             usuarios: '/api/usuarios',
-            auth: '/api/auth'
+            //auth: '/api/auth'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8000';
@@ -60,16 +60,13 @@ class Server {
         });
     }
     middlewares() {
-        //cors
         this.app.use((0, cors_1.default)());
-        //Parseo del body
         this.app.use(express_1.default.json());
-        //habilitacion de Carpetas publicas para servir contenido
         this.app.use(express_1.default.static('public'));
     }
     routes() {
         this.app.use(this.apiPaths.usuarios, userRoute.default);
-        this.app.use(this.apiPaths.auth, authRouter.default);
+        //this.app.use(this.apiPaths.auth, authRouter.default);
     }
     listen() {
         this.app.listen(this.port, () => {

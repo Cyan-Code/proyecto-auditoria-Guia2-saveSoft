@@ -1,9 +1,8 @@
 import { Sequelize } from 'sequelize'
 
-const db = new Sequelize('curso-node-f', 'root', 'Mypoopsql.co!', {
+const db = new Sequelize('auditoria', 'root', 'Mypoopsql.co!', {
   host:'localhost',
-  dialect:'mysql',
-  //logging: false
+  dialect:'mysql'
 });
 
 export default db;

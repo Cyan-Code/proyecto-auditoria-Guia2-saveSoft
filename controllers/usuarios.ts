@@ -1,20 +1,16 @@
 import { Response, Request } from "express";
-import { validationResult } from "express-validator";
-import { deCrypt, encript } from "../helpers/encript";
-import Usuario from "../models/user";
+//import { validationResult } from "express-validator";
+import { encript } from "../helpers/encript";
+import User from "../models/user";
 
-export const getUsuarios = async (req:Request, res:Response) => {
-  const usuarios = await Usuario.findAll({
-    where: {
-      estado: true
-    }
-  });
+export const getUsers = async (req:Request, res:Response) => {
+  const users = await User.findAll();
   res.json({
-    usuarios
+    users
   })
 }
 
-export const getUsuario = async (req:Request, res:Response) => {
+/* export const getUsuario = async (req:Request, res:Response) => {
   
   const { id } = req.params;
   const usuario = await Usuario.findByPk(id);
@@ -25,24 +21,20 @@ export const getUsuario = async (req:Request, res:Response) => {
       msg: `No existe un usuario con el ${id}`
     })
   }
-}
+} */
 
 export const postUsuario = async (req:Request, res:Response) => {
   const { body } = req;
-  const { nombre, email } = req.body;
-  
+  const {name} = body;
   body.password = encript(body.password);
-  const passwordDecrypt = deCrypt(body.password)
-  
+
   try {
-    const usuario = new Usuario(body)
-    await usuario.save();
+    const user = new User(body);
+    await user.save();
     return res.json({
       state: 'ok',
       msg: 'usuario grabado exitosamente',
-      nombre,
-      email,
-      passwordDecrypt
+      name
     })
 
   } catch (error) {
@@ -53,7 +45,7 @@ export const postUsuario = async (req:Request, res:Response) => {
   }
 }
 
-export const updatedUsuario = async (req:Request, res:Response) => {
+/* export const updatedUsuario = async (req:Request, res:Response) => {
   const { id } = req.params;
   const { body } = req;
 
@@ -75,9 +67,9 @@ export const updatedUsuario = async (req:Request, res:Response) => {
       msg: 'Hable con el administrador'
     })
   }
-}
+} */
 
-export const deleteUsuario = async (req:Request, res:Response) => {
+/* export const deleteUsuario = async (req:Request, res:Response) => {
   const { id } = req.params;
   try {
     const idUserExist = await Usuario.findByPk(id);
@@ -113,5 +105,5 @@ export const deleteAllUsers = async (req:Request, res:Response) => {
   })
   
   return res.json(deleteAll)
-}
+} */
 

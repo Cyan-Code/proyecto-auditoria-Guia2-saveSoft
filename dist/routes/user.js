@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const express_validator_1 = require("express-validator");
 const users_1 = require("../controllers/users");
+const db_validators_1 = require("../helpers/db-validators");
 const validar_campos_1 = require("../middlewares/validar-campos");
 const router = (0, express_1.Router)();
 router.get('/', users_1.getUsers);
@@ -10,8 +11,9 @@ router.get('/', users_1.getUsers);
 router.post('/', [
     (0, express_validator_1.check)('name', 'El nombre es obligatorio').notEmpty(),
     (0, express_validator_1.check)('password', 'La contraseña es obligatoria').notEmpty(),
-    (0, express_validator_1.check)('level', 'No es un rol permitido').isIn(['user', 'admin']),
-    //check('email', 'El email es obligatorio').notEmpty(),
+    (0, express_validator_1.check)('level', 'No es un nivel permitido').isIn(['user', 'admin']),
+    (0, express_validator_1.check)('id', 'Id debe existir').notEmpty(),
+    (0, express_validator_1.check)('id').custom(db_validators_1.idValidateUser),
     validar_campos_1.validarCampos
 ], users_1.postUsuario);
 /* router.put('/:id',[

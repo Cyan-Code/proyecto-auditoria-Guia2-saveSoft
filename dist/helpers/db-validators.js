@@ -12,13 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.idValidate = void 0;
+exports.idValidateUser = exports.idValidateStudent = void 0;
 const students_1 = __importDefault(require("../models/students"));
-const idValidate = (id) => __awaiter(void 0, void 0, void 0, function* () {
+const user_1 = __importDefault(require("../models/user"));
+const idValidateStudent = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const idStudent = yield students_1.default.findOne({ where: { id } });
     if (!!idStudent) {
         throw new Error(`El ${id} ya existe`);
     }
 });
-exports.idValidate = idValidate;
+exports.idValidateStudent = idValidateStudent;
+const idValidateUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const idUser = yield user_1.default.findOne({ where: { id } });
+    if (!!idUser) {
+        throw new Error(`El ${id} ya existe`);
+    }
+});
+exports.idValidateUser = idValidateUser;
 //# sourceMappingURL=db-validators.js.map

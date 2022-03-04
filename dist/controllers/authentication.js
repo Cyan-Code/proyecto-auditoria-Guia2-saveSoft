@@ -16,7 +16,7 @@ exports.authentication = void 0;
 const encript_1 = require("../helpers/encript");
 const user_1 = __importDefault(require("../models/user"));
 const authentication = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id, password, name } = req.body;
+    const { id, password } = req.body;
     try {
         const existeEmail = yield user_1.default.findOne({
             where: {
@@ -35,6 +35,10 @@ const authentication = (req, resp) => __awaiter(void 0, void 0, void 0, function
                 msg: 'Id o password incorrectas'
             });
         }
+        return resp.json({
+            msg: 'ok',
+            user
+        });
     }
     catch (error) {
         console.log(error);
@@ -42,10 +46,6 @@ const authentication = (req, resp) => __awaiter(void 0, void 0, void 0, function
             msg: 'Hable con el admin'
         });
     }
-    return resp.json({
-        msg: 'ok',
-        name
-    });
 });
 exports.authentication = authentication;
-//# sourceMappingURL=autenticacion.js.map
+//# sourceMappingURL=authentication.js.map

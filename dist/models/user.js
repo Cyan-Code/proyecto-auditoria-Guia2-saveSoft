@@ -14,6 +14,10 @@ const User = connection_1.default.define('user', {
     },
     level: {
         type: sequelize_1.DataTypes.ENUM('user', 'admin')
+    },
+    id: {
+        type: sequelize_1.DataTypes.STRING,
+        primaryKey: true
     }
 });
 exports.default = User;

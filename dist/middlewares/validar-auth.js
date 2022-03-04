@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.validarAuth = void 0;
 const express_validator_1 = require("express-validator");
 const validarAuth = (req, resp, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password } = req.body;
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
         return resp.json(errors);

@@ -10,6 +10,10 @@ const User = db.define('user', {
   },
   level: {
     type: DataTypes.ENUM('user', 'admin')
+  },
+  id: {
+    type: DataTypes.STRING,
+    primaryKey: true
   }
 });
 

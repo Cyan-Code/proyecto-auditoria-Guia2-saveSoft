@@ -10,7 +10,7 @@ router.get('/', students_1.getStudents);
 router.post('/', [
     (0, express_validator_1.check)('name', 'El nombre es obligatorio').notEmpty(),
     (0, express_validator_1.check)('id', 'Id debe existir').notEmpty(),
-    (0, express_validator_1.check)('id').custom(db_validators_1.idValidate),
+    (0, express_validator_1.check)('id').custom(db_validators_1.idValidateStudent),
     (0, express_validator_1.check)('program', 'El estudiante debe pertenecer a un programa').notEmpty(),
     validar_campos_1.validarCampos
 ], students_1.postStudent);

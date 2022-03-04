@@ -9,6 +9,7 @@ import {
   postUsuario,
   //updatedUsuario
 } from "../controllers/users";
+import { idValidateUser } from "../helpers/db-validators";
 
 import { validarCampos } from "../middlewares/validar-campos";
 
@@ -20,8 +21,9 @@ router.get('/', getUsers);
 router.post('/', [
   check('name', 'El nombre es obligatorio').notEmpty(),
   check('password', 'La contraseña es obligatoria').notEmpty(),
-  check('level', 'No es un rol permitido').isIn(['user', 'admin']),
-  //check('email', 'El email es obligatorio').notEmpty(),
+  check('level', 'No es un nivel permitido').isIn(['user', 'admin']),
+  check('id', 'Id debe existir').notEmpty(),
+  check('id').custom( idValidateUser ),
   validarCampos
 ], postUsuario);
 

@@ -1,7 +1,7 @@
 import express, {Application} from 'express';
 import * as userRoute from '../routes/user';
 import * as userStudent from '../routes/student';
-//import * as authRouter from '../routes/autenticacion';
+import * as authRouter from '../routes/authentication';
 import cors from 'cors';
 
 import db from '../db/connection';
@@ -12,7 +12,7 @@ class Server {
   private apiPaths = {
     users: '/api/users',
     students: '/api/students',
-    //auth: '/api/auth'
+    auth: '/api/auth'
   }
 
   constructor ( ) {
@@ -43,7 +43,7 @@ class Server {
   routes(){
     this.app.use(this.apiPaths.users, userRoute.default);
     this.app.use(this.apiPaths.students, userStudent.default);
-    //this.app.use(this.apiPaths.auth, authRouter.default);
+    this.app.use(this.apiPaths.auth, authRouter.default);
   }
 
   listen(){

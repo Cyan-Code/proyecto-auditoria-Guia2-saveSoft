@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postStudent = exports.getStudents = void 0;
+const connection_1 = __importDefault(require("../db/connection"));
 const students_1 = __importDefault(require("../models/students"));
 const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const students = yield students_1.default.findAll();
@@ -23,10 +24,11 @@ const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getStudents = getStudents;
 const postStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
-    const { name, program } = body;
     try {
         const student = new students_1.default(body);
         yield student.save();
+        const { name, program, id } = student.toJSON();
+        connection_1.default.query(`call sp_auditProcedure('${name}', '${program}', '${id}', 'fdsa5', 'FDSFAJ', 'FDFVVV');`); //TODO
         return res.json({
             state: 'ok',
             msg: 'usuario grabado exitosamente',

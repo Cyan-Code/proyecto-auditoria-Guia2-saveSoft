@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postStudent = exports.getStudents = void 0;
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const connection_1 = __importDefault(require("../db/connection"));
 const students_1 = __importDefault(require("../models/students"));
 const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -24,11 +25,23 @@ const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getStudents = getStudents;
 const postStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
+    const token = req.header('x-token');
+    if (!token) {
+        return res.status(404).json({
+            msg: 'No tiene token en la peticion'
+        });
+    }
     try {
+        const { name: nameAdmin, id: idAdmin, level: levelAdmin } = jsonwebtoken_1.default.verify(token, 'myT0K3M');
+        if (levelAdmin !== 'admin') {
+            return res.status(404).json({
+                msg: 'No tiene permisos necesarios'
+            });
+        }
         const student = new students_1.default(body);
         yield student.save();
         const { name, program, id } = student.toJSON();
-        connection_1.default.query(`call sp_auditProcedure('${name}', '${program}', '${id}', 'fdsa5', 'FDSFAJ', 'FDFVVV');`); //TODO
+        connection_1.default.query(`call sp_auditProcedure('${name}', '${program}', 'student', '${id}', '${idAdmin}', '${nameAdmin}');`);
         return res.json({
             state: 'ok',
             msg: 'usuario grabado exitosamente',

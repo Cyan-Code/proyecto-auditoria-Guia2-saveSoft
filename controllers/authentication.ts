@@ -3,7 +3,7 @@ import { deCrypt } from '../helpers/encript';
 import User from '../models/user';
 
 export const authentication = async(req:Request, resp:Response) => {
-  const {id, password} = req.body;
+  const {id ,password} = req.body;
   try {
     const existeEmail = await User.findOne({
       where: {

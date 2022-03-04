@@ -3,7 +3,7 @@ import {check} from 'express-validator';
 
 import { getStudents, postStudent } from "../controllers/students";
 import { idValidateStudent } from "../helpers/db-validators";
-import { validarCampos } from "../middlewares/validar-campos";
+import { validarCampos, validateJWT } from "../middlewares/validar-campos";
 
 const router = Router();
 

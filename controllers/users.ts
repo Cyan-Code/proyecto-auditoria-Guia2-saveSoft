@@ -1,6 +1,7 @@
 import { Response, Request } from "express";
 //import { validationResult } from "express-validator";
 import { encript } from "../helpers/encript";
+import { generateJWT } from "../helpers/jwt";
 import User from "../models/user";
 
 export const getUsers = async (req:Request, res:Response) => {
@@ -25,18 +26,19 @@ export const getUsers = async (req:Request, res:Response) => {
 
 export const postUsuario = async (req:Request, res:Response) => {
   const { body } = req;
-  const {name} = body;
+  const {name, id, level} = body;
   body.password = encript(body.password);
 
   try {
     const user = new User(body);
     await user.save();
+    const token = await generateJWT({name, id, level})
     return res.json({
       state: 'ok',
       msg: 'usuario grabado exitosamente',
-      name
+      name,
+      token
     })
-
   } catch (error) {
     console.log(error);
     return res.status(500).json({

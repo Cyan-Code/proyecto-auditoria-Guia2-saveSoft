@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postUsuario = exports.getUsers = void 0;
 //import { validationResult } from "express-validator";
 const encript_1 = require("../helpers/encript");
+const jwt_1 = require("../helpers/jwt");
 const user_1 = __importDefault(require("../models/user"));
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield user_1.default.findAll();
@@ -37,15 +38,17 @@ exports.getUsers = getUsers;
 } */
 const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
-    const { name } = body;
+    const { name, id, level } = body;
     body.password = (0, encript_1.encript)(body.password);
     try {
         const user = new user_1.default(body);
         yield user.save();
+        const token = yield (0, jwt_1.generateJWT)({ name, id, level });
         return res.json({
             state: 'ok',
             msg: 'usuario grabado exitosamente',
-            name
+            name,
+            token
         });
     }
     catch (error) {

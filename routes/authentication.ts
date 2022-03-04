@@ -7,7 +7,6 @@ import { validateJWT } from "../middlewares/validar-campos";
 const router = Router();
 
 router.post('/login',[
-  validateJWT,
   check('id', 'El id es obligatorio').notEmpty(),
   check('password', 'La contraseña es obligatoria').notEmpty(),
   validarAuth

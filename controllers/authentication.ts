@@ -1,30 +1,38 @@
 import { Response, Request } from 'express';
 import { deCrypt } from '../helpers/encript';
+import { generateJWT } from '../helpers/jwt';
 import User from '../models/user';
 
+interface userDB {
+  password: string,
+  name: string,
+  level: string
+}
+
 export const authentication = async(req:Request, resp:Response) => {
-  const {id ,password} = req.body;
+  const {id, password:passwordBody} = req.body;
   try {
-    const existeEmail = await User.findOne({
+    const existId = await User.findOne({
       where: {
         id
       }
     })
-    if (!existeEmail) {
+    if (!existId) {
       return resp.status(400).json({
         msg: 'Revisa tu Id o contraseña'
       })
     }
-    const user = existeEmail.toJSON();
-    const validPassword = deCrypt( user.password );
-    if (validPassword !== password) {
+    const { password, name, level } = existId.toJSON() as userDB;
+    const validPassword = deCrypt( password );
+    if (validPassword !== passwordBody) {
       return resp.status(400).json({
-        msg: 'Id o password incorrectas'
+        msg: 'Id o password incorrectos'
       })
     }
+    const token = await generateJWT({name, id, level})
     return resp.json({
       msg: 'ok',
-      user
+      token
     })
   } catch (error) {
     console.log(error)

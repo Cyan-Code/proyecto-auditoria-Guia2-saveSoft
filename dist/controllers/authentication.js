@@ -14,30 +14,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authentication = void 0;
 const encript_1 = require("../helpers/encript");
+const jwt_1 = require("../helpers/jwt");
 const user_1 = __importDefault(require("../models/user"));
 const authentication = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id, password } = req.body;
+    const { id, password: passwordBody } = req.body;
     try {
-        const existeEmail = yield user_1.default.findOne({
+        const existId = yield user_1.default.findOne({
             where: {
                 id
             }
         });
-        if (!existeEmail) {
+        if (!existId) {
             return resp.status(400).json({
                 msg: 'Revisa tu Id o contraseña'
             });
         }
-        const user = existeEmail.toJSON();
-        const validPassword = (0, encript_1.deCrypt)(user.password);
-        if (validPassword !== password) {
+        const { password, name, level } = existId.toJSON();
+        const validPassword = (0, encript_1.deCrypt)(password);
+        if (validPassword !== passwordBody) {
             return resp.status(400).json({
-                msg: 'Id o password incorrectas'
+                msg: 'Id o password incorrectos'
             });
         }
+        const token = yield (0, jwt_1.generateJWT)({ name, id, level });
         return resp.json({
             msg: 'ok',
-            user
+            token
         });
     }
     catch (error) {

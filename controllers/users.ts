@@ -27,6 +27,9 @@ export const getUsers = async (req:Request, res:Response) => {
 export const postUsuario = async (req:Request, res:Response) => {
   const { body } = req;
   const {name, id, level} = body;
+  const info = {
+    name, id, level
+  }
   body.password = encript(body.password);
 
   try {
@@ -36,8 +39,8 @@ export const postUsuario = async (req:Request, res:Response) => {
     return res.json({
       state: 'ok',
       msg: 'usuario grabado exitosamente',
-      name,
-      token
+      info,
+      token,
     })
   } catch (error) {
     console.log(error);

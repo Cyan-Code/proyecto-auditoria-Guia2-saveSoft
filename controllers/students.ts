@@ -3,17 +3,17 @@ import jwt from "jsonwebtoken";
 import db from "../db/connection";
 import Student from "../models/students";
 
+interface JwtPayload {
+  name:string,
+  id: string,
+  level: string
+}
 
 export const getStudents = async (req:Request, res:Response) => {
   const students = await Student.findAll();
   res.json({
     students
   })
-}
-interface JwtPayload {
-  name:string,
-  id: string,
-  level: string
 }
 
 export const postStudent = async (req:Request, res:Response) => {
@@ -33,13 +33,13 @@ export const postStudent = async (req:Request, res:Response) => {
     }
     const student = new Student(body);
     await student.save();
-    const {name, program, id} = student.toJSON()
+    const {name, program, id} = student.toJSON();
+    const info = {name, program, id};
     db.query(`call sp_auditProcedure('${name}', '${program}', 'student', '${id}', '${idAdmin}', '${nameAdmin}');`);
     return res.json({
       state: 'ok',
       msg: 'usuario grabado exitosamente',
-      name,
-      program
+      info
     })
   } catch (error) {
     console.log(error);

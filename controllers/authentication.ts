@@ -29,9 +29,11 @@ export const authentication = async(req:Request, resp:Response) => {
         msg: 'Id o password incorrectos'
       })
     }
+    const info = {name, level, id};
     const token = await generateJWT({name, id, level})
     return resp.json({
       msg: 'ok',
+      info,
       token
     })
   } catch (error) {

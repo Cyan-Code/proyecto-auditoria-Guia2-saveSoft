@@ -1,13 +1,15 @@
 import { Router } from "express";
 import {check} from 'express-validator';
 
-import { getStudents, postStudent } from "../controllers/students";
+import { getStudents, postStudent, getAudits } from "../controllers/students";
 import { idValidateStudent } from "../helpers/db-validators";
 import { validarCampos, validateJWT } from "../middlewares/validar-campos";
 
 const router = Router();
 
 router.get('/', getStudents);
+
+router.get('/audit', getAudits);
 
 router.post('/', [
   check('name', 'El nombre es obligatorio').notEmpty(),

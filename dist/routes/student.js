@@ -7,6 +7,7 @@ const db_validators_1 = require("../helpers/db-validators");
 const validar_campos_1 = require("../middlewares/validar-campos");
 const router = (0, express_1.Router)();
 router.get('/', students_1.getStudents);
+router.get('/audit', students_1.getAudits);
 router.post('/', [
     (0, express_validator_1.check)('name', 'El nombre es obligatorio').notEmpty(),
     (0, express_validator_1.check)('id', 'Id debe existir').notEmpty(),

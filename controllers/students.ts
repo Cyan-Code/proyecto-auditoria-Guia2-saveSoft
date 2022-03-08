@@ -1,12 +1,20 @@
 import { Response, Request } from "express";
 import jwt from "jsonwebtoken";
 import db from "../db/connection";
+import Audit from "../models/audit";
 import Student from "../models/students";
 
 interface JwtPayload {
   name:string,
   id: string,
   level: string
+}
+
+export const getAudits = async (req:Request, res:Response) => {
+  const audits = await Audit.findAll();
+  res.json({
+    audits
+  })
 }
 
 export const getStudents = async (req:Request, res:Response) => {

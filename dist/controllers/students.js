@@ -12,10 +12,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postStudent = exports.getStudents = void 0;
+exports.postStudent = exports.getStudents = exports.getAudits = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const connection_1 = __importDefault(require("../db/connection"));
+const audit_1 = __importDefault(require("../models/audit"));
 const students_1 = __importDefault(require("../models/students"));
+const getAudits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const audits = yield audit_1.default.findAll();
+    res.json({
+        audits
+    });
+});
+exports.getAudits = getAudits;
 const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const students = yield students_1.default.findAll();
     res.json({

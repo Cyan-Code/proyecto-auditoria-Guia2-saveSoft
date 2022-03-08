@@ -11,16 +11,16 @@ interface JwtPayload {
 }
 
 export const getAudits = async (req:Request, res:Response) => {
-  const audits = await Audit.findAll();
+  const users = await Audit.findAll();
   res.json({
-    audits
+    users
   })
 }
 
 export const getStudents = async (req:Request, res:Response) => {
-  const students = await Student.findAll();
+  const users = await Student.findAll();
   res.json({
-    students
+    users
   })
 }
 

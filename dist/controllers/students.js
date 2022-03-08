@@ -18,16 +18,16 @@ const connection_1 = __importDefault(require("../db/connection"));
 const audit_1 = __importDefault(require("../models/audit"));
 const students_1 = __importDefault(require("../models/students"));
 const getAudits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const audits = yield audit_1.default.findAll();
+    const users = yield audit_1.default.findAll();
     res.json({
-        audits
+        users
     });
 });
 exports.getAudits = getAudits;
 const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const students = yield students_1.default.findAll();
+    const users = yield students_1.default.findAll();
     res.json({
-        students
+        users
     });
 });
 exports.getStudents = getStudents;

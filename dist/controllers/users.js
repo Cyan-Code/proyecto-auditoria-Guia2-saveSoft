@@ -39,6 +39,9 @@ exports.getUsers = getUsers;
 const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
     const { name, id, level } = body;
+    const info = {
+        name, id, level
+    };
     body.password = (0, encript_1.encript)(body.password);
     try {
         const user = new user_1.default(body);
@@ -47,8 +50,8 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         return res.json({
             state: 'ok',
             msg: 'usuario grabado exitosamente',
-            name,
-            token
+            info,
+            token,
         });
     }
     catch (error) {

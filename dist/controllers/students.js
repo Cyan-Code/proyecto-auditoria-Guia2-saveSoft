@@ -41,12 +41,12 @@ const postStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const student = new students_1.default(body);
         yield student.save();
         const { name, program, id } = student.toJSON();
+        const info = { name, program, id };
         connection_1.default.query(`call sp_auditProcedure('${name}', '${program}', 'student', '${id}', '${idAdmin}', '${nameAdmin}');`);
         return res.json({
             state: 'ok',
             msg: 'usuario grabado exitosamente',
-            name,
-            program
+            info
         });
     }
     catch (error) {

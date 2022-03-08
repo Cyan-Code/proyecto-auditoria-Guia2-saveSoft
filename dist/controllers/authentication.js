@@ -36,9 +36,11 @@ const authentication = (req, resp) => __awaiter(void 0, void 0, void 0, function
                 msg: 'Id o password incorrectos'
             });
         }
+        const info = { name, level, id };
         const token = yield (0, jwt_1.generateJWT)({ name, id, level });
         return resp.json({
             msg: 'ok',
+            info,
             token
         });
     }
